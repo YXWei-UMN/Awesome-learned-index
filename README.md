@@ -12,11 +12,17 @@ This is a collection of learned index papers with notes.
 
 1. [2019-SOSD_Benchmark](papers/2019-SOSD_Benchmark.pdf)
 
-2. [2019-aiDM-Considerations_for_Updates](papers/2019-aiDM-Considerations_for_Updates.pdf)
+2. [2019-aiDM-Considerations_for_Updates](papers/2019-aiDM-Considerations_for_Updates.pdf): 
+    1) major observation - when the insertions follow a different distribution than that of the base data, the error of the model grows linearly with the number of inserted items.  
+    2) propose - segmenting and recording the error drift of each segment's starting key. Interpolating the drift of adjacent segments' starting key to get the drift of target key.
 
-3. [2019-arxiv-Scalable_Learned_Index_in_Storage](papers/2019-arxiv-Scalable_Learned_Index_in_Storage.pdf):  the initial version of FINEdex
+3. [2019-arxiv-Scalable_Learned_Index_in_Storage](papers/2019-arxiv-Scalable_Learned_Index_in_Storage.pdf):  
+    1) the initial version of FINEdex
+    2) naive update (similar to chain-based hash collision) 
 
 4. [2019-SIGMOD-FITing-Tree_Data-aware-Index](papers/2019-SIGMOD-FITing-Tree_Data-aware-Index.pdf)
+    1) also by Tim Kraska
+    2) use piece-wise linear function to approximate the mapping of key to location (memory-saving)
 
 ### 2020
 
