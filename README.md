@@ -17,27 +17,40 @@ This is a collection of learned index papers with notes.
     2) propose - segmenting and recording the error drift of each segment's starting key. Interpolating the drift of adjacent segments' starting key to get the drift of target key.
 
 3. [2019-arxiv-Scalable_Learned_Index_in_Storage](papers/2019-arxiv-Scalable_Learned_Index_in_Storage.pdf):  
-    1) the initial version of FINEdex
+    1) the initial version of FINEdex, similar to FITing-Tree except insertion policy
     2) naive update (similar to chain-based hash collision) 
 
 4. [2019-SIGMOD-FITing-Tree_Data-aware-Index](papers/2019-SIGMOD-FITing-Tree_Data-aware-Index.pdf)
     1) also by Tim Kraska
     2) use piece-wise linear function to approximate the mapping of key to location (memory-saving)
+    3) greedy error-bound based segmenting strategy: greedy partition data (similar to Feasible space window), ensure each segment containing data with bounded error
+    4) out-of-place insertion: buffering area within each segment, merge & re-segment once buffer is full
+    5) <strong> diff between the tree and RMI, why 2-layer RMI is considered better </strong>
+    6) other similar work: ASLM: Adaptive single layer model for learned index (multiple more complex greedy segmenting strategies)
 
 ### 2020
 
 1. [2020-aiDM-Radix_Spline](papers/2020-aiDM-Radix_Spline.pdf): Using linear spine fits to a CDF, then a flat radix table as an appoximate index.
-2. [2020-APSys-SIndex_Scalable_Learned_Index__String_Keys](papers/2020-APSys-SIndex_Scalable_Learned_Index__String_Keys.pdf)
-3. [2020-ICDEW-SMART-Self_Tuning_ART](papers/2020-ICDEW-SMART-Self_Tuning_ART.pdf)
-4. [2020-OSDI-Bourbon_learned_LSM](papers/2020-OSDI-Bourbon_learned_LSM.pdf)
-5. [2020-OSDI-Bourbon_learned_LSM_slides](papers/2020-OSDI-Bourbon_learned_LSM_slides.pdf)
-6. [2020-PPoPP-XIndex_Scalable_Learned_Index_for_Multicore_Data_Storage](papers/2020-PPoPP-XIndex_Scalable_Learned_Index_for_Multicore_Data_Storage.pdf)
-7. [2020-SIGMOD-ALEX_Updatable_Adaptive_Learned_Index](2020-SIGMOD-ALEX_Updatable_Adaptive_Learned_Index.pdf)
-8. [2020-SIGMOD-CDFShop-Exploring_and_Optimizing_Learned_Index_Structures](papers/2020-SIGMOD-CDFShop-Exploring_and_Optimizing_Learned_Index_Structures.pdf): tuning parameters of RMIs
-9. [2020-VLDB-PGM-index_fully-dynamic_compressed_worst-case_bounds](papers/2020-VLDB-PGM-index_fully-dynamic_compressed_worst-case_bounds.pdf)
-10. [2020-workshop_NIPS_Learned_Index_for_bigtable](papers/2020-workshop_NIPS_Learned_Index_for_bigtable.pdf)
-11. [2020-SIGMOD-HOPE](papers/2020-SIGMOD-HOPE.pdf): not learned index, but an encoding schme; order persevering encoding for string; can be used for string learned indexes
-12. [2020-SIGMOD_The_Case_for_a_Learned_Sorting_Algorithm](papers/2020-SIGMOD_The_Case_for_a_Learned_Sorting_Algorithm.pdf)
+    1) spline interpolation based
+3. [2020-APSys-SIndex_Scalable_Learned_Index__String_Keys](papers/2020-APSys-SIndex_Scalable_Learned_Index__String_Keys.pdf)
+4. [2020-ICDEW-SMART-Self_Tuning_ART](papers/2020-ICDEW-SMART-Self_Tuning_ART.pdf)
+5. [2020-OSDI-Bourbon_learned_LSM](papers/2020-OSDI-Bourbon_learned_LSM.pdf)
+6. [2020-OSDI-Bourbon_learned_LSM_slides](papers/2020-OSDI-Bourbon_learned_LSM_slides.pdf)
+7. [2020-PPoPP-XIndex_Scalable_Learned_Index_for_Multicore_Data_Storage](papers/2020-PPoPP-XIndex_Scalable_Learned_Index_for_Multicore_Data_Storage.pdf)
+    1) Piece-wise linear model + out-of-place insertion 
+    2) concurrency (w8 for further update)
+9. [2020-SIGMOD-ALEX_Updatable_Adaptive_Learned_Index](2020-SIGMOD-ALEX_Updatable_Adaptive_Learned_Index.pdf)
+    1) in-place insertion: reserve empty space for potential insertion. Collision is handled similar to hash linear probe
+    2) exponential search instead of binary search <strong>(says it is because ALEX has better look up accuracy but why?)</strong>
+    3) dynamic RMI, leaf node split once the empty space is less than a threshold
+10. [2020-SIGMOD-CDFShop-Exploring_and_Optimizing_Learned_Index_Structures](papers/2020-SIGMOD-CDFShop-Exploring_and_Optimizing_Learned_Index_Structures.pdf): tuning parameters of RMIs
+11. [2020-VLDB-PGM-index_fully-dynamic_compressed_worst-case_bounds](papers/2020-VLDB-PGM-index_fully-dynamic_compressed_worst-case_bounds.pdf)
+    1) based on FITing-Tree (streaming segmenting <- greedy segmenting)
+    2) LSM tree like insertion & deletion to delay and merge updates  <strong> any diff between insertion & deletion </strong>
+    3) compression
+12. [2020-workshop_NIPS_Learned_Index_for_bigtable](papers/2020-workshop_NIPS_Learned_Index_for_bigtable.pdf)
+13. [2020-SIGMOD-HOPE](papers/2020-SIGMOD-HOPE.pdf): not learned index, but an encoding schme; order persevering encoding for string; can be used for string learned indexes
+14. [2020-SIGMOD_The_Case_for_a_Learned_Sorting_Algorithm](papers/2020-SIGMOD_The_Case_for_a_Learned_Sorting_Algorithm.pdf)
 
 ### 2021
 
@@ -138,3 +151,8 @@ This is a collection of learned index papers with notes.
 2. [2022-PVLDB-Endowment-Can_Learned_Models_Replace_Hash_Functions](papers/2022-PVLDB-Endowment-Can_Learned_Models_Replace_Hash_Functions.pdf)
 3. [2022-learned_Similarity_Search](papers/2022-learned_Similarity_Search.pdf)
 2. [2023-ASPLOS-LeaFTL-Learning-Based Flash Translation Layer for Solid-State Drives](papers/2023-ASPLOS-LeaFTL-leared_FTL_for_SSD.pdf) Learned index for SSD FTL page-level memory mapping
+
+### Linear Model help traditional index (e.g., hybrid Btree + learned index)
+[2019-Workshop on Applied AI for Database Systems and Applications Accelerating B+tree search by using simple machine learning techniques]
+[2019-Proc. of the Int.Conf. on Extending Database Technology Interpolation-friendly B-trees: Bridging the gap between algorithmic and learned indexes]
+[2019-Int. Conf. on Web Information Systems and Applications. Hybrid indexes by exploring traditional B-Tree and linear regression.]
